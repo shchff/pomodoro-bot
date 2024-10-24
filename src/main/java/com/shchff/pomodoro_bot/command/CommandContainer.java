@@ -16,9 +16,10 @@ public class CommandContainer
 
         commandMap = new HashMap<>();
         commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
-        commandMap.put(WORK.getCommandName(), new WorkCommand(sendBotMessageService));
+        commandMap.put(START_POMODORO.getCommandName(), new StartPomodoroCommand(sendBotMessageService));
         commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
+        commandMap.put(ABOUT.getCommandName(), new AboutCommand(sendBotMessageService));
 
         unknownCommand = new UnknownCommand(sendBotMessageService);
     }

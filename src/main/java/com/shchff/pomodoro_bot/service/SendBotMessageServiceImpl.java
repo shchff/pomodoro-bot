@@ -23,6 +23,8 @@ public class SendBotMessageServiceImpl implements SendBotMessageService
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
+        sendMessage.enableHtml(true);
+        sendMessage.setParseMode("Markdown");
 
         try {
             pomodoroBot.execute(sendMessage);

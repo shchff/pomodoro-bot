@@ -3,13 +3,13 @@ package com.shchff.pomodoro_bot.command;
 import com.shchff.pomodoro_bot.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class WorkCommand implements Command
+public class StartPomodoroCommand implements Command
 {
     private final SendBotMessageService sendBotMessageService;
 
-    public final static String WORK_MESSAGE = "Начало работы";
+    public final static String START_POMODORO_MESSAGE = "Начало работы";
 
-    public WorkCommand(SendBotMessageService sendBotMessageService)
+    public StartPomodoroCommand(SendBotMessageService sendBotMessageService)
     {
         this.sendBotMessageService = sendBotMessageService;
     }
@@ -18,6 +18,6 @@ public class WorkCommand implements Command
     @Override
     public void execute(Update update)
     {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), WORK_MESSAGE);
+        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), START_POMODORO_MESSAGE);
     }
 }
