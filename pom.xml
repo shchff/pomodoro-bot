@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shchff</groupId>
-	<artifactId>pomodoro-bot</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<artifactId>pomodoro</artifactId>
+	<version>0.3.0-SNAPSHOT</version>
 	<name>Pomodoro Bot</name>
 	<description>Telegram bot for time management</description>
 	<url/>
