@@ -2,6 +2,6 @@ package com.shchff.pomodoro.service;
 
 public interface TimerService
 {
-    void startPomodoro(String chatId);
-    void stopPomodoro(String chatId);
+    TimerResult startPomodoro(String chatId);
+    TimerResult stopPomodoro(String chatId);
 }

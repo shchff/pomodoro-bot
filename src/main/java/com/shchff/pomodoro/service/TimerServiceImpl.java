@@ -1,8 +1,11 @@
 package com.shchff.pomodoro.service;
 
+import org.jvnet.hk2.annotations.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class TimerServiceImpl implements TimerService
 {
     private static final int DEFAULT_WORK_TIME = 25;
@@ -11,30 +14,27 @@ public class TimerServiceImpl implements TimerService
     private final Map<String, PomodoroTimer> timers = new HashMap<>();
 
     @Override
-    public void startPomodoro(String chatId)
+    public TimerResult startPomodoro(String chatId)
     {
-        if (!timers.containsKey(chatId))
+        if (timers.containsKey(chatId))
         {
-            // TODO: отправить сообщение, что всё работает
+            return TimerResult.FAILURE;
         }
 
         PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME, DEFAULT_LONG_BREAK_TIME);
         timers.put(chatId, timer);
-        // TODO: отправить сообщение, что таймер запущен запущен
+        return TimerResult.SUCCESS;
     }
 
     @Override
-    public void stopPomodoro(String chatId)
+    public TimerResult stopPomodoro(String chatId)
     {
         PomodoroTimer timer = timers.remove(chatId);
         if (timer != null)
         {
             timer.stop();
-            // TODO: ВСЁ
+            return TimerResult.SUCCESS;
         }
-        else
-        {
-            // TODO: нет запущенного таймера
-        }
+        return TimerResult.FAILURE;
     }
 }
