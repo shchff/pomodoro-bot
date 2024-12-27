@@ -9,8 +9,8 @@ public class CommandUtils
         return update.getMessage().getChatId();
     }
 
-    public static Long getMessage(Update update)
+    public static String getMessage(Update update)
     {
-        return update.getMessage().getChatId();
+        return update.getMessage().toString();
     }
 }

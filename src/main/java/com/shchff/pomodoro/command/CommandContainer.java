@@ -22,7 +22,7 @@ public class CommandContainer
         commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
         commandMap.put(ABOUT.getCommandName(), new AboutCommand(sendBotMessageService));
-        commandMap.put(STATUS.getCommandName(), new StatusCommand(sendBotMessageService));
+        commandMap.put(STATUS.getCommandName(), new StatusCommand(sendBotMessageService, timerService));
 
         unknownCommand = new UnknownCommand(sendBotMessageService);
     }
