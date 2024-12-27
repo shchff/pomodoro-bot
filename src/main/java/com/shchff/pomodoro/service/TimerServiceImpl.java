@@ -13,7 +13,7 @@ public class TimerServiceImpl implements TimerService
     @Override
     public void startPomodoro(String chatId)
     {
-        if (timers.containsKey(chatId))
+        if (!timers.containsKey(chatId))
         {
             // TODO: отправить сообщение, что всё работает
         }

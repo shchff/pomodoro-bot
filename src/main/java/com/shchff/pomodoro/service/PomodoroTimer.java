@@ -7,4 +7,5 @@ public interface PomodoroTimer
     void startWorkSession();
     void startBreakSession();
     void startLongBreakSession();
+    void setLongBreakTime(int minutes);
 }

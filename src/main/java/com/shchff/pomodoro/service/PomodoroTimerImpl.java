@@ -7,11 +7,8 @@ import java.util.TimerTask;
 
 public class PomodoroTimerImpl implements PomodoroTimer
 {
-    @Setter
-    private int workTime;
-    @Setter
-    private int breakTime;
-    @Setter
+    private final int workTime;
+    private final int breakTime;
     private int longBreakTime;
     private int pomodoroCount;
     private boolean isRunning;
@@ -72,6 +69,15 @@ public class PomodoroTimerImpl implements PomodoroTimer
                 startWorkSession();
             }
         }, (long) breakTime * 60 * 1000);
+    }
+
+    @Override
+    public void setLongBreakTime(int minutes)
+    {
+        if (minutes >= 10 && minutes <= 30)
+        {
+            longBreakTime = minutes;
+        }
     }
 
     @Override

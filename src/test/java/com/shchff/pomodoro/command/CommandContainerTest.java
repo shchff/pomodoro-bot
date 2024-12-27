@@ -1,6 +1,7 @@
 package com.shchff.pomodoro.command;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
+import com.shchff.pomodoro.service.TimerService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,8 @@ public class CommandContainerTest
     @BeforeEach
     public void init() {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
-        commandContainer = new CommandContainer(sendBotMessageService);
+        TimerService timerService = Mockito.mock(TimerService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, timerService);
     }
 
     @Test
