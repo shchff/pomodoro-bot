@@ -2,6 +2,7 @@ package com.shchff.pomodoro.bot;
 
 import com.shchff.pomodoro.command.CommandContainer;
 import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
+import com.shchff.pomodoro.service.TimerServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -22,7 +23,7 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
     public PomodoroTelegramBot(@Value("${bot.token}") String botToken)
     {
         super(botToken);
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), new TimerServiceImpl());
     }
 
     @Override

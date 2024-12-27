@@ -4,6 +4,7 @@ import com.shchff.pomodoro.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.shchff.pomodoro.command.CommandName.*;
+import static com.shchff.pomodoro.command.CommandUtils.getChatId;
 
 public class HelpCommand implements Command
 {
@@ -32,6 +33,6 @@ public class HelpCommand implements Command
     @Override
     public void execute(Update update)
     {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), HELP_MESSAGE);
+        sendBotMessageService.sendMessage(getChatId(update).toString(), HELP_MESSAGE);
     }
 }

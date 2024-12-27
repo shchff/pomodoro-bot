@@ -1,5 +1,8 @@
 package com.shchff.pomodoro.command;
 
+import lombok.Getter;
+
+@Getter
 public enum CommandName
 {
     ABOUT("/about"),
@@ -18,10 +21,5 @@ public enum CommandName
     CommandName(String commandName)
     {
         this.commandName = commandName;
-    }
-
-    public String getCommandName()
-    {
-        return commandName;
     }
 }

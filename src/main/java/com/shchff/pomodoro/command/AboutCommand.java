@@ -2,6 +2,7 @@ package com.shchff.pomodoro.command;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import static com.shchff.pomodoro.command.CommandUtils.getChatId;
 
 public class AboutCommand implements Command
 {
@@ -20,10 +21,9 @@ public class AboutCommand implements Command
         this.sendBotMessageService = sendBotMessageService;
     }
 
-
     @Override
     public void execute(Update update)
     {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), ABOUT_MESSAGE);
+        sendBotMessageService.sendMessage(getChatId(update).toString(), ABOUT_MESSAGE);
     }
 }
