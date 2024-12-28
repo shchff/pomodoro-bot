@@ -1,4 +1,4 @@
-package com.shchff.pomodoro.service;
+package com.shchff.pomodoro.service.timer;
 
 public enum TimerResult
 {

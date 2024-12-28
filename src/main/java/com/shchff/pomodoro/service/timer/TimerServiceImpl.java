@@ -1,4 +1,4 @@
-package com.shchff.pomodoro.service;
+package com.shchff.pomodoro.service.timer;
 
 import org.jvnet.hk2.annotations.Service;
 
@@ -36,5 +36,30 @@ public class TimerServiceImpl implements TimerService
             return TimerResult.SUCCESS;
         }
         return TimerResult.FAILURE;
+    }
+
+    @Override
+    public TimerState getCurrentState(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        if (timer == null)
+        {
+            return TimerState.OFF;
+        }
+
+        return timer.getState();
+    }
+
+    @Override
+    public int getSessionCount(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+
+        if (timer == null)
+        {
+            return -1;
+        }
+
+        return timer.getPomodoroCount();
     }
 }

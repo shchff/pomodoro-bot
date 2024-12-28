@@ -1,7 +1,7 @@
 package com.shchff.pomodoro.command;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
-import com.shchff.pomodoro.service.TimerService;
+import com.shchff.pomodoro.service.timer.TimerService;
 
 import java.util.HashMap;
 import java.util.Map;

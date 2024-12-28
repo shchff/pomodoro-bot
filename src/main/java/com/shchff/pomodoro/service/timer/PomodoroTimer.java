@@ -1,4 +1,4 @@
-package com.shchff.pomodoro.service;
+package com.shchff.pomodoro.service.timer;
 
 public interface PomodoroTimer
 {
@@ -8,4 +8,6 @@ public interface PomodoroTimer
     void startBreakSession();
     void startLongBreakSession();
     void setLongBreakTime(int minutes);
+    int getPomodoroCount();
+    TimerState getState();
 }

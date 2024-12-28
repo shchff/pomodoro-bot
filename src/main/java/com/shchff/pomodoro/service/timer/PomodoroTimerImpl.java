@@ -1,6 +1,4 @@
-package com.shchff.pomodoro.service;
-
-import lombok.Setter;
+package com.shchff.pomodoro.service.timer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,8 +9,8 @@ public class PomodoroTimerImpl implements PomodoroTimer
     private final int breakTime;
     private int longBreakTime;
     private int pomodoroCount;
-    private boolean isRunning;
     private Timer timer;
+    private TimerState state;
 
     public PomodoroTimerImpl(int workTime, int breakTime, int longBreakTime)
     {
@@ -20,13 +18,12 @@ public class PomodoroTimerImpl implements PomodoroTimer
         this.breakTime = breakTime;
         this.longBreakTime = longBreakTime;
         this.pomodoroCount = 0;
-        this.isRunning = false;
     }
 
     @Override
     public void start()
     {
-        isRunning = true;
+        state = TimerState.WORK;
         timer = new Timer();
         startWorkSession();
     }
@@ -34,7 +31,6 @@ public class PomodoroTimerImpl implements PomodoroTimer
     @Override
     public void stop()
     {
-        isRunning = false;
         timer.cancel();
     }
 
@@ -78,6 +74,18 @@ public class PomodoroTimerImpl implements PomodoroTimer
         {
             longBreakTime = minutes;
         }
+    }
+
+    @Override
+    public int getPomodoroCount()
+    {
+        return pomodoroCount;
+    }
+
+    @Override
+    public TimerState getState()
+    {
+        return state;
     }
 
     @Override

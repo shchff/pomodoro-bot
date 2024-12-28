@@ -2,7 +2,7 @@ package com.shchff.pomodoro.bot;
 
 import com.shchff.pomodoro.command.CommandContainer;
 import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
-import com.shchff.pomodoro.service.TimerServiceImpl;
+import com.shchff.pomodoro.service.timer.TimerServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
