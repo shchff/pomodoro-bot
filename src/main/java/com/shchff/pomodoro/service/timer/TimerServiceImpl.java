@@ -1,5 +1,6 @@
 package com.shchff.pomodoro.service.timer;
 
+import com.shchff.pomodoro.service.SendBotMessageService;
 import org.jvnet.hk2.annotations.Service;
 
 import java.util.HashMap;
@@ -10,8 +11,13 @@ public class TimerServiceImpl implements TimerService
 {
     private static final int DEFAULT_WORK_TIME = 25;
     private static final int DEFAULT_BREAK_TIME = 5;
-    private static final int DEFAULT_LONG_BREAK_TIME = 15;
     private final Map<String, PomodoroTimer> timers = new HashMap<>();
+    private final SendBotMessageService sendBotMessageService;
+
+    public TimerServiceImpl(SendBotMessageService sendBotMessageService)
+    {
+        this.sendBotMessageService = sendBotMessageService;
+    }
 
     @Override
     public TimerResult startPomodoro(String chatId)
@@ -21,7 +27,8 @@ public class TimerServiceImpl implements TimerService
             return TimerResult.FAILURE;
         }
 
-        PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME, DEFAULT_LONG_BREAK_TIME);
+        PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME);
+        timer.start();
         timers.put(chatId, timer);
         return TimerResult.SUCCESS;
     }
@@ -30,12 +37,13 @@ public class TimerServiceImpl implements TimerService
     public TimerResult stopPomodoro(String chatId)
     {
         PomodoroTimer timer = timers.remove(chatId);
-        if (timer != null)
+        if (timer == null)
         {
-            timer.stop();
-            return TimerResult.SUCCESS;
+            return TimerResult.FAILURE;
         }
-        return TimerResult.FAILURE;
+
+        timer.stop();
+        return TimerResult.SUCCESS;
     }
 
     @Override

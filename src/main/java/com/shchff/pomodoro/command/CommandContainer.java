@@ -13,8 +13,8 @@ public class CommandContainer
     private final Map<String, Command> commandMap;
     private final Command unknownCommand;
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, TimerService timerService) {
-
+    public CommandContainer(SendBotMessageService sendBotMessageService, TimerService timerService)
+    {
         commandMap = new HashMap<>();
         commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
         commandMap.put(START_POMODORO.getCommandName(), new StartPomodoroCommand(sendBotMessageService, timerService));
@@ -27,7 +27,8 @@ public class CommandContainer
         unknownCommand = new UnknownCommand(sendBotMessageService);
     }
 
-    public Command retrieveCommand(String commandIdentifier) {
+    public Command retrieveCommand(String commandIdentifier)
+    {
         return commandMap.getOrDefault(commandIdentifier, unknownCommand);
     }
 }

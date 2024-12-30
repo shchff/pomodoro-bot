@@ -6,8 +6,6 @@ public interface PomodoroTimer
     void stop();
     void startWorkSession();
     void startBreakSession();
-    void startLongBreakSession();
-    void setLongBreakTime(int minutes);
     int getPomodoroCount();
     TimerState getState();
 }

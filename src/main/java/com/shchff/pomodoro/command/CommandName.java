@@ -9,9 +9,9 @@ public enum CommandName
     HELP("/help"),
     NO("nocommand"),
     START("/start"),
-    START_POMODORO("/startPomodoro"),
+    START_POMODORO("/start_pomodoro"),
     STATUS("/status"),
-    STOP_POMODORO("/stopPomodoro");
+    STOP_POMODORO("/stop_pomodoro");
 
     private final String commandName;
 

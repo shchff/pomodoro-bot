@@ -3,6 +3,8 @@ package com.shchff.pomodoro.command;
 import com.shchff.pomodoro.bot.PomodoroTelegramBot;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
+import com.shchff.pomodoro.service.timer.TimerService;
+import com.shchff.pomodoro.service.timer.TimerServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +16,7 @@ abstract class AbstractCommandTest
 {
     protected PomodoroTelegramBot pomodoroBot = Mockito.mock(PomodoroTelegramBot.class);
     protected SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(pomodoroBot);
+    protected TimerService timerService = new TimerServiceImpl(sendBotMessageService);
 
     abstract String getCommandName();
 

@@ -1,5 +1,8 @@
 package com.shchff.pomodoro.service.timer;
 
+import com.shchff.pomodoro.service.SendBotMessageService;
+import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,23 +10,20 @@ public class PomodoroTimerImpl implements PomodoroTimer
 {
     private final int workTime;
     private final int breakTime;
-    private int longBreakTime;
     private int pomodoroCount;
     private Timer timer;
     private TimerState state;
 
-    public PomodoroTimerImpl(int workTime, int breakTime, int longBreakTime)
+    public PomodoroTimerImpl(int workTime, int breakTime)
     {
         this.workTime = workTime;
         this.breakTime = breakTime;
-        this.longBreakTime = longBreakTime;
         this.pomodoroCount = 0;
     }
 
     @Override
     public void start()
     {
-        state = TimerState.WORK;
         timer = new Timer();
         startWorkSession();
     }
@@ -37,20 +37,14 @@ public class PomodoroTimerImpl implements PomodoroTimer
     @Override
     public void startWorkSession()
     {
+        state = TimerState.WORK;
+        pomodoroCount++;
         timer.schedule(new TimerTask()
             {
                 @Override
                 public void run()
                 {
-                    pomodoroCount++;
-                    if (pomodoroCount >= 4)
-                    {
-                        startBreakSession();
-                    }
-                    else
-                    {
-                        startLongBreakSession();
-                    }
+                    startBreakSession();
                 }
             }, (long) workTime * 60 * 1000
         );
@@ -59,21 +53,13 @@ public class PomodoroTimerImpl implements PomodoroTimer
     @Override
     public void startBreakSession()
     {
+        state = TimerState.BREAK;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 startWorkSession();
             }
         }, (long) breakTime * 60 * 1000);
-    }
-
-    @Override
-    public void setLongBreakTime(int minutes)
-    {
-        if (minutes >= 10 && minutes <= 30)
-        {
-            longBreakTime = minutes;
-        }
     }
 
     @Override
@@ -86,16 +72,5 @@ public class PomodoroTimerImpl implements PomodoroTimer
     public TimerState getState()
     {
         return state;
-    }
-
-    @Override
-    public void startLongBreakSession()
-    {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                startWorkSession();
-            }
-        }, (long) longBreakTime * 60 * 1000);
     }
 }

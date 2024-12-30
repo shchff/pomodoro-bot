@@ -10,11 +10,11 @@ public class StartPomodoroCommand implements Command
     private final SendBotMessageService sendBotMessageService;
     private final TimerService timerService;
 
-    private final static String START_POMODORO_MESSAGE_SUCCESS = "Помодоро-таймер запущен!" +
+    public final static String START_POMODORO_MESSAGE_SUCCESS = "Помодоро-таймер запущен!" +
             "\n" +
             "Продуктивной работы!";
 
-    private final static String START_POMODORO_MESSAGE_FAILURE = "В данный момент уже запущена сессия";
+    public final static String START_POMODORO_MESSAGE_FAILURE = "В данный момент уже запущена сессия";
 
 
     public StartPomodoroCommand(SendBotMessageService sendBotMessageService, TimerService timerService)
