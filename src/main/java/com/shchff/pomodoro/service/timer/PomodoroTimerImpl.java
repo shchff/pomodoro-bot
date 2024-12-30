@@ -1,23 +1,24 @@
 package com.shchff.pomodoro.service.timer;
 
-import com.shchff.pomodoro.service.SendBotMessageService;
-import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PomodoroTimerImpl implements PomodoroTimer
 {
+    private final String id;
     private final int workTime;
     private final int breakTime;
     private int pomodoroCount;
     private Timer timer;
     private TimerState state;
+    private final TimerStateObserver observer;
 
-    public PomodoroTimerImpl(int workTime, int breakTime)
+    public PomodoroTimerImpl(int workTime, int breakTime, TimerStateObserver observer, String id)
     {
         this.workTime = workTime;
         this.breakTime = breakTime;
+        this.observer = observer;
+        this.id = id;
         this.pomodoroCount = 0;
     }
 
@@ -39,6 +40,10 @@ public class PomodoroTimerImpl implements PomodoroTimer
     {
         state = TimerState.WORK;
         pomodoroCount++;
+        if (pomodoroCount > 1)
+        {
+            observer.acceptStateChange(id, state);
+        }
         timer.schedule(new TimerTask()
             {
                 @Override
@@ -54,6 +59,7 @@ public class PomodoroTimerImpl implements PomodoroTimer
     public void startBreakSession()
     {
         state = TimerState.BREAK;
+        observer.acceptStateChange(id, state);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

@@ -7,12 +7,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class TimerServiceImpl implements TimerService
+public class TimerServiceImpl implements TimerService, TimerStateObserver
 {
     private static final int DEFAULT_WORK_TIME = 25;
     private static final int DEFAULT_BREAK_TIME = 5;
     private final Map<String, PomodoroTimer> timers = new HashMap<>();
     private final SendBotMessageService sendBotMessageService;
+
+    private static final String WORK_MESSAGE = "Перерыв закончился, приступай к работе!";
+    private static final String BREAK_MESSAGE = "Перерыв!\nОтдыхай 5 минут";
 
     public TimerServiceImpl(SendBotMessageService sendBotMessageService)
     {
@@ -27,7 +30,7 @@ public class TimerServiceImpl implements TimerService
             return TimerResult.FAILURE;
         }
 
-        PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME);
+        PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME, this, chatId);
         timer.start();
         timers.put(chatId, timer);
         return TimerResult.SUCCESS;
@@ -69,5 +72,18 @@ public class TimerServiceImpl implements TimerService
         }
 
         return timer.getPomodoroCount();
+    }
+
+    @Override
+    public void acceptStateChange(String chatId, TimerState state)
+    {
+        if (state == TimerState.WORK)
+        {
+            sendBotMessageService.sendMessage(chatId, WORK_MESSAGE);
+        }
+        else if (state == TimerState.BREAK)
+        {
+            sendBotMessageService.sendMessage(chatId, BREAK_MESSAGE);
+        }
     }
 }
