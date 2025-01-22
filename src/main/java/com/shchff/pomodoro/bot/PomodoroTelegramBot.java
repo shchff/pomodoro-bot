@@ -31,7 +31,16 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
     @Override
     public void onUpdateReceived(Update update)
     {
-        if(update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasCallbackQuery())
+        {
+            String callbackData = update.getCallbackQuery().getData();
+            if (callbackData.startsWith("break_time:"))
+            {
+                commandContainer.getSetBreakTimeCommand().execute(update);
+            }
+        }
+
+        if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
             if (message.startsWith(COMMAND_PREFIX))
             {

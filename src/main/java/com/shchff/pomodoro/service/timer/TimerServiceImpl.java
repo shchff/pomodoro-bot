@@ -2,12 +2,16 @@ package com.shchff.pomodoro.service.timer;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
 import org.jvnet.hk2.annotations.Service;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
-public class TimerServiceImpl implements TimerService, TimerStateObserver
+public class TimerServiceImpl implements TimerService, TimerObserver
 {
     private static final int DEFAULT_WORK_TIME = 25;
     private static final int DEFAULT_BREAK_TIME = 5;
@@ -15,7 +19,14 @@ public class TimerServiceImpl implements TimerService, TimerStateObserver
     private final SendBotMessageService sendBotMessageService;
 
     private static final String WORK_MESSAGE = "Перерыв закончился, приступай к работе!";
-    private static final String BREAK_MESSAGE = "Перерыв!\nОтдыхай 5 минут";
+    private static final String BREAK_MESSAGE = "Перерыв!\nОтдыхай %s минут";
+
+    private String buildBreakMessage(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        int breakTime = timer.getBreakTime();
+        return String.format(BREAK_MESSAGE, breakTime);
+    }
 
     public TimerServiceImpl(SendBotMessageService sendBotMessageService)
     {
@@ -75,6 +86,14 @@ public class TimerServiceImpl implements TimerService, TimerStateObserver
     }
 
     @Override
+    public void setBreakTime(String chatId, int breakTime)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        timer.setBreakTime(breakTime);
+        timer.startBreakSession();
+    }
+
+    @Override
     public void acceptStateChange(String chatId, TimerState state)
     {
         if (state == TimerState.WORK)
@@ -83,7 +102,39 @@ public class TimerServiceImpl implements TimerService, TimerStateObserver
         }
         else if (state == TimerState.BREAK)
         {
-            sendBotMessageService.sendMessage(chatId, BREAK_MESSAGE);
+            sendBotMessageService.sendMessage(chatId, buildBreakMessage(chatId));
         }
+    }
+
+    @Override
+    public void askForChangingBreakTime(String chatId)
+    {
+        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, buildBreakMessage(chatId), getInlineKeyBoardMessage());
+    }
+
+    public static InlineKeyboardMarkup getInlineKeyBoardMessage()
+    {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton notChangeButton = new InlineKeyboardButton();
+        notChangeButton.setText("Не менять время перерыва");
+        notChangeButton.setCallbackData("break_time: 5");
+
+        InlineKeyboardButton inlineKeyboardButton15 = new InlineKeyboardButton();
+        inlineKeyboardButton15.setText("Сделать перерыв 15 минут");
+        inlineKeyboardButton15.setCallbackData("break_time: 15");
+
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow1.add(notChangeButton);
+        keyboardButtonsRow2.add(inlineKeyboardButton15);
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        keyboard.add(keyboardButtonsRow1);
+        keyboard.add(keyboardButtonsRow2);
+
+        inlineKeyboardMarkup.setKeyboard(keyboard);
+        return inlineKeyboardMarkup;
     }
 }

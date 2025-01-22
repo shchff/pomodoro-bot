@@ -1,6 +1,5 @@
 package com.shchff.pomodoro.service.timer;
 
-import com.shchff.pomodoro.service.SendBotMessageService;
 
 public interface TimerService
 {
@@ -8,4 +7,5 @@ public interface TimerService
     TimerResult stopPomodoro(String chatId);
     TimerState getCurrentState(String chatId);
     int getSessionCount(String chatId);
+    void setBreakTime(String chatId, int breakTime);
 }
