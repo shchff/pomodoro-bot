@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
 @Service
 public class SendBotMessageServiceImpl implements SendBotMessageService
 {
@@ -25,7 +24,7 @@ public class SendBotMessageServiceImpl implements SendBotMessageService
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
         sendMessage.enableHtml(true);
-
+        sendMessage.enableMarkdown(true);
         try {
             pomodoroBot.execute(sendMessage);
         } catch (TelegramApiException e) {

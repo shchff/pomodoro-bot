@@ -1,6 +1,6 @@
-package com.shchff.pomodoro.service.timer;
+package com.shchff.pomodoro.service;
 
-import com.shchff.pomodoro.service.SendBotMessageService;
+import com.shchff.pomodoro.service.timer.*;
 import org.jvnet.hk2.annotations.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -109,25 +109,35 @@ public class TimerServiceImpl implements TimerService, TimerObserver
     @Override
     public void askForChangingBreakTime(String chatId)
     {
-        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, buildBreakMessage(chatId), getInlineKeyBoardMessage());
+        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, "Выбери время следующего перерыва (в минутах) \uD83D\uDD54:", getInlineKeyBoardMessage());
     }
 
     public static InlineKeyboardMarkup getInlineKeyBoardMessage()
     {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
-        InlineKeyboardButton notChangeButton = new InlineKeyboardButton();
-        notChangeButton.setText("Не менять время перерыва");
-        notChangeButton.setCallbackData("break_time: 5");
+        InlineKeyboardButton fiveMinutesButton = new InlineKeyboardButton();
+        fiveMinutesButton.setText("5");
+        fiveMinutesButton.setCallbackData("break_time: 5");
 
-        InlineKeyboardButton inlineKeyboardButton15 = new InlineKeyboardButton();
-        inlineKeyboardButton15.setText("Сделать перерыв 15 минут");
-        inlineKeyboardButton15.setCallbackData("break_time: 15");
+        InlineKeyboardButton tenMinutesButton = new InlineKeyboardButton();
+        tenMinutesButton.setText("10");
+        tenMinutesButton.setCallbackData("break_time: 10");
+
+        InlineKeyboardButton fifteenMinutesButton = new InlineKeyboardButton();
+        fifteenMinutesButton.setText("15");
+        fifteenMinutesButton.setCallbackData("break_time: 15");
+
+        InlineKeyboardButton twentyMinutesButton = new InlineKeyboardButton();
+        twentyMinutesButton.setText("20");
+        twentyMinutesButton.setCallbackData("break_time: 20");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow1.add(notChangeButton);
-        keyboardButtonsRow2.add(inlineKeyboardButton15);
+        keyboardButtonsRow1.add(fiveMinutesButton);
+        keyboardButtonsRow1.add(tenMinutesButton);
+        keyboardButtonsRow2.add(fifteenMinutesButton);
+        keyboardButtonsRow2.add(twentyMinutesButton);
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 

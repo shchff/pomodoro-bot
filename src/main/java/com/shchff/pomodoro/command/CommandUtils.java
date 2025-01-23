@@ -6,7 +6,15 @@ public class CommandUtils
 {
     public static Long getChatId(Update update)
     {
-        return update.getMessage().getChatId();
+        if (update.hasMessage())
+        {
+            return update.getMessage().getChatId();
+        }
+        else if (update.hasCallbackQuery())
+        {
+            return update.getCallbackQuery().getMessage().getChatId();
+        }
+        return -1L;
     }
 
     public static String getMessage(Update update)

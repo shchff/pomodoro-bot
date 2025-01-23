@@ -1,6 +1,6 @@
 package com.shchff.pomodoro.command;
 
-import com.shchff.pomodoro.service.timer.TimerService;
+import com.shchff.pomodoro.service.TimerService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class SetBreakTimeCommand implements Command

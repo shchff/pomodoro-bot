@@ -2,7 +2,7 @@ package com.shchff.pomodoro.command;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
 import com.shchff.pomodoro.service.timer.TimerResult;
-import com.shchff.pomodoro.service.timer.TimerService;
+import com.shchff.pomodoro.service.TimerService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StopPomodoroCommand implements Command

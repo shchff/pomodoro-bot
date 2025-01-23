@@ -1,7 +1,7 @@
 package com.shchff.pomodoro.command;
 
 import com.shchff.pomodoro.service.SendBotMessageService;
-import com.shchff.pomodoro.service.timer.TimerService;
+import com.shchff.pomodoro.service.TimerService;
 import com.shchff.pomodoro.service.timer.TimerState;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

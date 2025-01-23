@@ -1,5 +1,8 @@
-package com.shchff.pomodoro.service.timer;
+package com.shchff.pomodoro.service;
 
+
+import com.shchff.pomodoro.service.timer.TimerResult;
+import com.shchff.pomodoro.service.timer.TimerState;
 
 public interface TimerService
 {
