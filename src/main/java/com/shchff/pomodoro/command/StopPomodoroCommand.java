@@ -10,8 +10,8 @@ public class StopPomodoroCommand implements Command
     private final SendBotMessageService sendBotMessageService;
     private final TimerService timerService;
 
-    private final static String STOP_POMODORO_MESSAGE_SUCCESS = "Работа окончена, ты молодец!";
-    private final static String STOP_POMODORO_MESSAGE_FAILURE = "Тебе нечего останавливать)";
+    private final static String STOP_POMODORO_MESSAGE_SUCCESS = "\uD83D\uDC4D Работа окончена, ты молодец!";
+    private final static String STOP_POMODORO_MESSAGE_FAILURE = "\uD83E\uDD37 Тебе нечего останавливать";
 
     public StopPomodoroCommand(SendBotMessageService sendBotMessageService, TimerService timerService)
     {

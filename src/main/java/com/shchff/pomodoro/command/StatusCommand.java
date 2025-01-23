@@ -7,9 +7,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StatusCommand implements Command
 {
-    private final static String TIMER_OFF_MESSAGE = "В данный момент таймер не запущен";
-    private final static String TIMER_WORK_MESSAGE = "Работа.\nНомер текущего раунда - %d";
-    private final static String TIMER_BREAK_MESSAGE = "Перерыв.\nНомер текущего раунда - %d";
+    private final static String TIMER_OFF_MESSAGE = "\uD83D\uDE34 В данный момент таймер не запущен";
+    private final static String TIMER_WORK_MESSAGE = "⛏️ Работа\nНомер текущего раунда - %d";
+    private final static String TIMER_BREAK_MESSAGE = "⏸️ Перерыв .\nНомер текущего раунда - %d";
 
     private final SendBotMessageService sendBotMessageService;
     private final TimerService timerService;

@@ -23,8 +23,8 @@ public class SendBotMessageServiceImpl implements SendBotMessageService
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
-        sendMessage.enableHtml(true);
-        sendMessage.enableMarkdown(true);
+//        sendMessage.enableHtml(true);
+//        sendMessage.enableMarkdown(true);
         try {
             pomodoroBot.execute(sendMessage);
         } catch (TelegramApiException e) {
