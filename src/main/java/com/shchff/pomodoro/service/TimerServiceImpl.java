@@ -20,6 +20,7 @@ public class TimerServiceImpl implements TimerService, TimerObserver
 
     private static final String WORK_MESSAGE = "Перерыв закончился, приступай к работе!";
     private static final String BREAK_MESSAGE = "Перерыв!\nОтдыхай %s минут";
+    private static final String CHANGE_BREAK_TIME_MESSAGE = "\uD83D\uDD54 Выбери время следующего перерыва (в минутах):";
 
     private String buildBreakMessage(String chatId)
     {
@@ -109,7 +110,7 @@ public class TimerServiceImpl implements TimerService, TimerObserver
     @Override
     public void askForChangingBreakTime(String chatId)
     {
-        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, "Выбери время следующего перерыва (в минутах) \uD83D\uDD54:", getInlineKeyBoardMessage());
+        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, CHANGE_BREAK_TIME_MESSAGE, getInlineKeyBoardMessage());
     }
 
     public static InlineKeyboardMarkup getInlineKeyBoardMessage()
@@ -134,6 +135,7 @@ public class TimerServiceImpl implements TimerService, TimerObserver
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+
         keyboardButtonsRow1.add(fiveMinutesButton);
         keyboardButtonsRow1.add(tenMinutesButton);
         keyboardButtonsRow2.add(fifteenMinutesButton);

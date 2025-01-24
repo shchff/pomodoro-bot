@@ -39,7 +39,6 @@ abstract class AbstractCommandTest
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(getCommandMessage());
-        sendMessage.setParseMode("Markdown");
 
         //when
         getCommand().execute(update);

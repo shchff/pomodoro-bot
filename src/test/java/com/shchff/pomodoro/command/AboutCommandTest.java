@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import static com.shchff.pomodoro.command.CommandName.ABOUT;
 
-@DisplayName("Unit-level testing for NoCommand")
+@DisplayName("Unit-level testing for AboutCommand")
 public class AboutCommandTest extends AbstractCommandTest
 {
 

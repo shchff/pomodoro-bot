@@ -31,7 +31,6 @@ public class SendMessageServiceTest
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(message);
         sendMessage.setChatId(chatId);
-        sendMessage.setParseMode("Markdown");
 
         //when
         sendBotMessageService.sendMessage(chatId, message);

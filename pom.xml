@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.shchff</groupId>
 	<artifactId>pomodoro</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 	<name>Pomodoro Bot</name>
 	<description>Telegram bot for time management</description>
 	<url/>
@@ -18,7 +18,10 @@
 		<license/>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<name>Grigorii Shcherbakov</name>
+			<email>grisaserbakov0@gmail.com</email>
+		</developer>
 	</developers>
 	<scm>
 		<connection/>
@@ -63,5 +66,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
