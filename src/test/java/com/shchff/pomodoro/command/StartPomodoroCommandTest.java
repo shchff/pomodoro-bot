@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import static com.shchff.pomodoro.command.CommandName.START_POMODORO;
 
-@DisplayName("Unit-level testing for UnknownCommand")
+@DisplayName("Unit-level testing for StartPomodoroCommand")
 public class StartPomodoroCommandTest extends AbstractCommandTest
 {
 

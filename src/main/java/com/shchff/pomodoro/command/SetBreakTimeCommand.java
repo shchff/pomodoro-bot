@@ -17,7 +17,7 @@ public class SetBreakTimeCommand implements Command
     {
         String chatId = String.valueOf(CommandUtils.getChatId(update));
         int break_time = Integer.parseInt(update.getCallbackQuery().getData().split(" ")[1]);
-
+        
         timerService.setBreakTime(chatId, break_time);
     }
 }
