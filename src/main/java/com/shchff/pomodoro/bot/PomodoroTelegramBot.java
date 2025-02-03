@@ -19,7 +19,7 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
     private final CommandContainer commandContainer;
 
     @Value("${bot.username}")
-    private  String username;
+    private String username;
 
     public PomodoroTelegramBot(@Value("${bot.token}") String botToken)
     {

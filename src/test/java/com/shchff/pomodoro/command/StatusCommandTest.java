@@ -25,10 +25,4 @@ public class StatusCommandTest extends AbstractCommandTest
     {
         return new StatusCommand(sendBotMessageService, timerService);
     }
-
-    @Test
-    public void shouldShowWorkingState()
-    {
-
-    }
 }
