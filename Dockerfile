@@ -1,7 +1,7 @@
 FROM openjdk:17-jdk-slim-buster
 LABEL authors="shchff"
 WORKDIR /bot
-COPY /target/pomodoro-0.5.0-SNAPSHOT.jar /bot/pomodoro.jar
+COPY /target/pomodoro-1.0.0.jar /bot/pomodoro.jar
 
 EXPOSE 8080
 
