@@ -4,9 +4,9 @@
 
 🍅 The Pomodoro Method is a time management technique developed by Francesco Cirillo in the late 1980s.
 
-📚 Basic principles:\
-1️⃣ Divide your work into short 25-minute intervals (these are called “pomodoros”), followed by short breaks of 5 minutes each. \
-2️⃣ After four such “pomodoros”, take a longer break in the range of 5 to 25 minutes.
+📚 Basic principles:
+- Divide your work into short 25-minute intervals (these are called _pomodoros_), followed by short breaks of 5 minutes each.
+- After four such _pomodoros_, take a longer break in the range of 5 to 25 minutes.
 
 🎯 The purpose of the method is to help you concentrate, avoid burnout and increase your productivity.
 
@@ -20,21 +20,25 @@
 
 If you want to play with the bot code, follow these **simple steps**:
 
-1. Register your bot \
+### 1. Register your bot
 It's pretty easy, just follow the [BotFather](https://telegram.me/BotFather) guide.
-2. Clone repo:
+### 2. Clone repo:
 ```shell
 git clone https://github.com/shchff/pomodoro-bot.git
 ```
-3. Navigate to the project directory
+### 3. Navigate to the project directory
 ```shell
 cd pomodoro-bot
 ```
-4. Build and run Docker-Container:
+### 4. Compile the project
+```shell
+mvn clean package
+```
+### 5. Build and run Docker-Container:
 ```shell
 docker build -t your-docker-image-name .
 ```
-Insert **your_bot_token** and **your_bot_name** which you've registered on the 1st step:
+Insert `your_bot_token` and `your_bot_name` which you've registered on the 1st step:
 ```shell
 docker run -e BOT_TOKEN=your_bot_token -e BOT_NAME=your_bot_name -p 8080:8080 your-docker-image-name
 ```
