@@ -1,5 +1,9 @@
 # 🍅 Pomodoro Bot
 
+<div align="center">
+    <img width="500" src="assets/pomodoro-avatar.jpg" alt="pomodoro image"/>
+</div>
+
 ## 📕 Description
 
 🍅 The Pomodoro Method is a time management technique developed by Francesco Cirillo in the late 1980s.
@@ -40,7 +44,7 @@ docker build -t your-docker-image-name .
 ```
 Insert `your_bot_token` and `your_bot_name` which you've registered on the 1st step:
 ```shell
-docker run -e BOT_TOKEN=your_bot_token -e BOT_NAME=your_bot_name -p 8080:8080 your-docker-image-name
+docker run -e BOT_TOKEN=your_bot_token -e BOT_USERNAME=your_bot_name -p 8080:8080 your-docker-image-name
 ```
 
 ## ❓ Expluatation guide
