@@ -36,7 +36,7 @@ git clone https://github.com/shchff/pomodoro-bot.git
 ```shell
 cd pomodoro-bot
 ```
-### 4. Compile the project
+### 4. Package the project
 ```shell
 mvn clean package
 ```
