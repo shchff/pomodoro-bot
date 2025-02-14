@@ -4,6 +4,8 @@
     <img width="500" src="assets/pomodoro-avatar.jpg" alt="pomodoro image"/>
 </div>
 
+[Link to the bot](https://telegram.me/pomodoro_concentration_bot)
+
 ## 📕 Description
 
 🍅 The Pomodoro Method is a time management technique developed by Francesco Cirillo in the late 1980s.
