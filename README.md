@@ -14,7 +14,7 @@
 - Divide your work into short 25-minute intervals (these are called _pomodoros_), followed by short breaks of 5 minutes each.
 - After four such _pomodoros_, take a longer break in the range of 5 to 25 minutes.
 
-🎯 The purpose of the method is to help you concentrate, avoid burnout and increase your productivity.
+🎯 The method aims to help you concentrate, avoid burnout, and increase your productivity.
 
 ## ⚒️ Stack
 
@@ -27,7 +27,7 @@
 If you want to play with the bot code, follow these **simple steps**:
 
 ### 1. Register your bot
-It's pretty easy, just follow the [BotFather](https://telegram.me/BotFather) guide.
+It's pretty easy, follow the [BotFather](https://telegram.me/BotFather) guide.
 ### 2. Clone repo:
 ```shell
 git clone https://github.com/shchff/pomodoro-bot.git
@@ -55,5 +55,5 @@ The commands presented are intuitive:
 - `/start_pomodoro` - to start your work
 - `/stop_pomodoro` - to stop
 
-For more information use `/help` command.
+For more information, use the `/help` command.
 
