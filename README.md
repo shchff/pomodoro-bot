@@ -37,7 +37,7 @@ Want to run your own Pomodoro Bot? Follow these simple steps:
 
 1. Open [BotFather](https://t.me/BotFather) in Telegram.
 2. Send the command `/newbot` and follow the instructions.
-3. You will get a **bot token** like this: `7597655202:AAGjG1sZWsxst4RfNyZZtl_ddCwTT3WVOlg`
+3. You will get a **bot token** like this: 7597655202:AAGjG1sZWsxst4RfNyZZtl_ddCwTT3WVOlg
 4. Save your bot username (e.g., `pomodoro_concentration_bot`) and the token.
 
 ---
@@ -99,12 +99,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
 
   pomodoro-bot:
     build: .
@@ -116,11 +110,7 @@ services:
     restart: always
     environment:
       SPRING_PROFILES_ACTIVE: prod
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "512M"
+
 volumes:
   postgres_data:
  ```
@@ -142,6 +132,7 @@ View the bot logs:
 docker logs -f pomodoro-bot
 ```
 Restart containers:
+
 ```bash
 docker compose restart
 ```
@@ -152,8 +143,6 @@ docker compose down
 ```
 
 Press `/start` and enjoy your Pomodoro sessions! 🍅
-
----
 
 ## ❓ Usage
 Here are some available bot commands:
