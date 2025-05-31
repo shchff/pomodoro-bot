@@ -1,5 +1,6 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,13 +19,14 @@ public class LanguageCommand implements Command
 {
 
     private final SendBotMessageService sendBotMessageService;
-
-    private static final String SELECT_LANGUAGE_MESSAGE = "🌐 Select language:";
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update) {
         String chatId = CommandUtils.getChatId(update).toString();
-        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, SELECT_LANGUAGE_MESSAGE, buildInlineKeyboard());
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
+        String message = localeMessageService.getMessage("selectLanguage", userId);
+        sendBotMessageService.sendMessageWithReplyKeyboard(chatId, message, buildInlineKeyboard());
     }
 
     @Override
@@ -38,15 +40,15 @@ public class LanguageCommand implements Command
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         List<InlineKeyboardButton> row1 = new ArrayList<>();
-        row1.add(createButton("English", "lang_en"));
-        row1.add(createButton("Русский", "lang_ru"));
+        row1.add(createButton("\uD83C\uDDFA\uD83C\uDDF8 English", "lang_en"));
+        row1.add(createButton("\uD83C\uDDF7\uD83C\uDDFA Русский", "lang_ru"));
 
         List<InlineKeyboardButton> row2 = new ArrayList<>();
-        row2.add(createButton("Español", "lang_es"));
-        row2.add(createButton("Deutsch", "lang_de"));
+        row2.add(createButton("\uD83C\uDDEA\uD83C\uDDF8 Español", "lang_es"));
+        row2.add(createButton("\uD83C\uDDE9\uD83C\uDDEA Deutsch", "lang_de"));
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
-        row3.add(createButton("Português", "lang_pt"));
+        row3.add(createButton("\uD83C\uDDF5\uD83C\uDDF9 Português", "lang_pt"));
 
         rows.add(row1);
         rows.add(row2);

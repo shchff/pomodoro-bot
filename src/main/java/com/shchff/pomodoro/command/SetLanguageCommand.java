@@ -1,5 +1,6 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import com.shchff.pomodoro.service.UserPreferencesService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ public class SetLanguageCommand implements Command
 {
     private final UserPreferencesService userPreferencesService;
     private final SendBotMessageService sendBotMessageService;
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update)
@@ -24,7 +26,22 @@ public class SetLanguageCommand implements Command
 
         String selectedLang = callbackData.substring(5);
         userPreferencesService.saveUserLocale(userId, selectedLang);
-        sendBotMessageService.sendMessage(chatId, "✅ Language updated to: " + selectedLang.toUpperCase());
+
+        String fullNameOfLanguage = switch (selectedLang)
+        {
+            case "ru" -> "Русский";
+            case "en" -> "English";
+            case "de" -> "Deutsch";
+            case "es" -> "Español";
+            case "pt" -> "Português";
+            default -> "";
+        };
+
+        String message = String.format(
+                localeMessageService.getMessage("languageIsSelected", userId),
+                fullNameOfLanguage);
+
+        sendBotMessageService.sendMessage(chatId, message);
     }
 
     @Override
