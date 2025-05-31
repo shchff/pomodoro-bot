@@ -1,9 +1,7 @@
 package com.shchff.pomodoro.bot;
 
 import com.shchff.pomodoro.command.CommandContainer;
-import com.shchff.pomodoro.service.SendBotMessageService;
-import com.shchff.pomodoro.service.SendBotMessageServiceImpl;
-import com.shchff.pomodoro.service.TimerServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,7 +14,7 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
 {
     public static String COMMAND_PREFIX = "/";
 
-    private final CommandContainer commandContainer;
+    private CommandContainer commandContainer;
 
     @Value("${bot.username}")
     private String username;
@@ -24,8 +22,12 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
     public PomodoroTelegramBot(@Value("${bot.token}") String botToken)
     {
         super(botToken);
-        SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(this);
-        this.commandContainer = new CommandContainer(sendBotMessageService, new TimerServiceImpl(sendBotMessageService));
+    }
+
+    @Autowired
+    public void setCommandContainer(CommandContainer commandContainer)
+    {
+        this.commandContainer = commandContainer;
     }
 
     @Override
@@ -40,7 +42,8 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
             }
         }
 
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage() && update.getMessage().hasText())
+        {
             String message = update.getMessage().getText().trim();
             if (message.startsWith(COMMAND_PREFIX))
             {

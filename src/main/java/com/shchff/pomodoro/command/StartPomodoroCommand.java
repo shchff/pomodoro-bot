@@ -1,42 +1,48 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import com.shchff.pomodoro.service.timer.TimerResult;
 import com.shchff.pomodoro.service.TimerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Locale;
+
+import static com.shchff.pomodoro.command.CommandName.START_POMODORO;
+
+@Component
+@RequiredArgsConstructor
 public class StartPomodoroCommand implements Command
 {
     private final SendBotMessageService sendBotMessageService;
     private final TimerService timerService;
-
-    public final static String START_POMODORO_MESSAGE_SUCCESS = "Помодоро-таймер запущен!" +
-            "\n" +
-            "Продуктивной работы!";
-
-    public final static String START_POMODORO_MESSAGE_FAILURE = "В данный момент уже запущена сессия";
-
-
-    public StartPomodoroCommand(SendBotMessageService sendBotMessageService, TimerService timerService)
-    {
-        this.sendBotMessageService = sendBotMessageService;
-        this.timerService = timerService;
-    }
-
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update)
     {
-        String chatId = String.valueOf(CommandUtils.getChatId(update));
+        String chatId = CommandUtils.getChatId(update).toString();
         TimerResult result = timerService.startPomodoro(chatId);
+        Locale userLocale = CommandUtils.getUserLocale(update);
 
+        String message;
         if (result == TimerResult.SUCCESS)
         {
-            sendBotMessageService.sendMessage(chatId, START_POMODORO_MESSAGE_SUCCESS);
+            message = localeMessageService.getMessage("startPomodoro.success", userLocale);
         }
         else
         {
-            sendBotMessageService.sendMessage(chatId, START_POMODORO_MESSAGE_FAILURE);
+            message = localeMessageService.getMessage("startPomodoro.failure", userLocale);
         }
+
+        sendBotMessageService.sendMessage(chatId, message);
+    }
+
+    @Override
+    public String getCommandName()
+    {
+        return START_POMODORO.getCommandName();
     }
 }

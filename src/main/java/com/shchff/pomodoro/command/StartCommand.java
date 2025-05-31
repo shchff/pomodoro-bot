@@ -1,31 +1,42 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static com.shchff.pomodoro.command.CommandName.HELP;
-import static com.shchff.pomodoro.command.CommandName.START_POMODORO;
+import java.util.Locale;
 
+import static com.shchff.pomodoro.command.CommandName.*;
+
+@Component
+@RequiredArgsConstructor
 public class StartCommand implements Command
 {
     private final SendBotMessageService sendBotMessageService;
-
-    public final static String START_MESSAGE = String.format("""
-            👋 Привет! Я Pomodoro Bot, и я помогу тебе лучше управлять временем и повысить продуктивность.
-            
-            🍅 Метод Помидора: 25 минут работы и 5 минут отдыха. После четырёх таких циклов я предложу тебе более длинный перерыв.
-            👉 Чтобы начать, просто используй команду %s.
-            ℹ️ Для получения всех доступных команд используй %s.""", START_POMODORO.getCommandName(), HELP.getCommandName());
-
-    public StartCommand(SendBotMessageService sendBotMessageService)
-    {
-        this.sendBotMessageService = sendBotMessageService;
-    }
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update)
     {
-        String chatId = String.valueOf(CommandUtils.getChatId(update));
-        sendBotMessageService.sendMessage(chatId, START_MESSAGE);
+        String chatId = CommandUtils.getChatId(update).toString();
+        Locale userLocale = CommandUtils.getUserLocale(update);
+        String message = localeMessageService.getMessage("start", userLocale);
+        String richMessage = buildMessage(message);
+        sendBotMessageService.sendMessage(chatId, richMessage);
+    }
+
+    private String buildMessage(String message)
+    {
+        return String.format(message,
+                START_POMODORO.getCommandName(),
+                HELP.getCommandName());
+    }
+
+    @Override
+    public String getCommandName()
+    {
+        return START.getCommandName();
     }
 }
