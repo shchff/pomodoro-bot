@@ -15,16 +15,21 @@ public class CommandContainer
     private final Command unknownCommand;
     @Getter
     private final SetBreakTimeCommand setBreakTimeCommand;
+    @Getter
+    private final SetLanguageCommand setLanguageCommand;
 
     @Autowired
-    public CommandContainer(List<Command> commands, SetBreakTimeCommand setBreakTimeCommand, UnknownCommand unknownCommand)
+    public CommandContainer(List<Command> commands, SetBreakTimeCommand setBreakTimeCommand,
+                            SetLanguageCommand setLanguageCommand, UnknownCommand unknownCommand)
     {
         this.setBreakTimeCommand = setBreakTimeCommand;
+        this.setLanguageCommand = setLanguageCommand;
         this.unknownCommand = unknownCommand;
 
         for (Command command : commands)
         {
-            if (!(command instanceof UnknownCommand) && !(command instanceof SetBreakTimeCommand))
+            if (!(command instanceof UnknownCommand) && !(command instanceof SetBreakTimeCommand)
+                && !(command instanceof SetLanguageCommand))
             {
                 String commandName = command.getCommandName();
                 commandMap.put(commandName, command);

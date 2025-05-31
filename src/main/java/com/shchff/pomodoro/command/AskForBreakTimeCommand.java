@@ -4,30 +4,23 @@ import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import static com.shchff.pomodoro.command.CommandName.ASK_FOR_BREAK_TIME;
 
 @Component
 @RequiredArgsConstructor
-public class AskForBreakTimeCommand implements Command
+public class AskForBreakTimeCommand implements InternalCommand
 {
     private final SendBotMessageService sendBotMessageService;
     private final LocaleMessageService localeMessageService;
 
     @Override
-    public void execute(Update update)
+    public void execute(String chatId, Long userId)
     {
-        String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("askForBreakTime", userLocale);
+        String message = localeMessageService.getMessage("askForBreakTime", userId);
         sendBotMessageService.sendMessageWithReplyKeyboard(chatId, message, getInlineKeyboard());
     }
 
@@ -48,11 +41,5 @@ public class AskForBreakTimeCommand implements Command
         button.setText(text);
         button.setCallbackData(data);
         return button;
-    }
-
-    @Override
-    public String getCommandName()
-    {
-        return ASK_FOR_BREAK_TIME.getCommandName();
     }
 }

@@ -22,8 +22,8 @@ public class UnknownCommand implements Command
     public void execute(Update update)
     {
         String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("unknown", userLocale);
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
+        String message = localeMessageService.getMessage("unknown", userId);
         String richMessage = buildMessage(message);
         sendBotMessageService.sendMessage(chatId, richMessage);
     }

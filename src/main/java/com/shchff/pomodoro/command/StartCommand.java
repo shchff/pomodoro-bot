@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Locale;
-
 import static com.shchff.pomodoro.command.CommandName.*;
 
 @Component
@@ -21,8 +19,8 @@ public class StartCommand implements Command
     public void execute(Update update)
     {
         String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("start", userLocale);
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
+        String message = localeMessageService.getMessage("start", userId);
         String richMessage = buildMessage(message);
         sendBotMessageService.sendMessage(chatId, richMessage);
     }

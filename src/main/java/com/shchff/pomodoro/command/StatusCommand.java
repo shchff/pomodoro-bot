@@ -24,13 +24,13 @@ public class StatusCommand implements Command
     public void execute(Update update)
     {
         String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
         TimerState state = timerService.getCurrentState(chatId);
 
         String message;
         if (state == TimerState.OFF)
         {
-            message = localeMessageService.getMessage("status.off", userLocale);
+            message = localeMessageService.getMessage("status.off", userId);
         }
         else
         {
@@ -38,11 +38,11 @@ public class StatusCommand implements Command
 
             if (state == TimerState.WORK)
             {
-                message = localeMessageService.getMessage("status.work", userLocale);
+                message = localeMessageService.getMessage("status.work", userId);
             }
             else
             {
-                message = localeMessageService.getMessage("status.break", userLocale);
+                message = localeMessageService.getMessage("status.break", userId);
             }
 
             message = String.format(message, pomodoroCount);

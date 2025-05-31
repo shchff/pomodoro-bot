@@ -1,6 +1,8 @@
 package com.shchff.pomodoro.bot;
 
 import com.shchff.pomodoro.command.CommandContainer;
+import com.shchff.pomodoro.command.CommandUtils;
+import com.shchff.pomodoro.service.UserPreferencesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
     public static String COMMAND_PREFIX = "/";
 
     private CommandContainer commandContainer;
+    private UserPreferencesService userPreferencesService;
 
     @Value("${bot.username}")
     private String username;
@@ -30,12 +33,29 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
         this.commandContainer = commandContainer;
     }
 
+    @Autowired
+    public void setUserPreferencesService(UserPreferencesService userPreferencesService)
+    {
+        this.userPreferencesService = userPreferencesService;
+    }
+
     @Override
     public void onUpdateReceived(Update update)
     {
         if (update.hasCallbackQuery())
         {
+            Long userId = CommandUtils.getUserIdFromCallbackQuery(update.getCallbackQuery());
+            String chatId = CommandUtils.getChatId(update).toString();
+
+            userPreferencesService.registerUserIfNotExists(userId, chatId);
+
             String callbackData = update.getCallbackQuery().getData();
+
+            if (callbackData.startsWith("lang_"))
+            {
+                commandContainer.getSetLanguageCommand().execute(update);
+            }
+
             if (callbackData.startsWith("break_time:"))
             {
                 commandContainer.getSetBreakTimeCommand().execute(update);
@@ -44,6 +64,11 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
 
         if (update.hasMessage() && update.getMessage().hasText())
         {
+            Long userId = CommandUtils.getUserIdFromCallbackQuery(update.getCallbackQuery());
+            String chatId = CommandUtils.getChatId(update).toString();
+
+            userPreferencesService.registerUserIfNotExists(userId, chatId);
+
             String message = update.getMessage().getText().trim();
             if (message.startsWith(COMMAND_PREFIX))
             {
