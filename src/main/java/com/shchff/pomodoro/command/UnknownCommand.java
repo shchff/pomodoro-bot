@@ -1,22 +1,42 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Locale;
+
 import static com.shchff.pomodoro.command.CommandName.HELP;
+import static com.shchff.pomodoro.command.CommandName.UNKNOWN;
 
-public class UnknownCommand implements Command {
-
-    public static final String UNKNOWN_MESSAGE = String.format("Не понимаю вас \uD83D\uDE1F, напишите %s чтобы узнать что я понимаю.", HELP.getCommandName());
-
+@Component
+@RequiredArgsConstructor
+public class UnknownCommand implements Command
+{
     private final SendBotMessageService sendBotMessageService;
+    private final LocaleMessageService localeMessageService;
 
-    public UnknownCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    @Override
+    public void execute(Update update)
+    {
+        String chatId = CommandUtils.getChatId(update).toString();
+        Locale userLocale = CommandUtils.getUserLocale(update);
+        String message = localeMessageService.getMessage("unknown", userLocale);
+        String richMessage = buildMessage(message);
+        sendBotMessageService.sendMessage(chatId, richMessage);
+    }
+
+    private String buildMessage(String message)
+    {
+        return String.format(message,
+                HELP.getCommandName());
     }
 
     @Override
-    public void execute(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), UNKNOWN_MESSAGE);
+    public String getCommandName()
+    {
+        return UNKNOWN.getCommandName();
     }
 }

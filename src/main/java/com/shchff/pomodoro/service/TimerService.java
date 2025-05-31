@@ -1,14 +1,108 @@
 package com.shchff.pomodoro.service;
 
+import com.shchff.pomodoro.command.AskForBreakTimeCommand;
+import com.shchff.pomodoro.command.BreakCommand;
+import com.shchff.pomodoro.command.CommandUtils;
+import com.shchff.pomodoro.command.WorkCommand;
+import com.shchff.pomodoro.service.timer.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.shchff.pomodoro.service.timer.TimerResult;
-import com.shchff.pomodoro.service.timer.TimerState;
-
-public interface TimerService
+@Service
+@RequiredArgsConstructor
+public class TimerService implements TimerObserver
 {
-    TimerResult startPomodoro(String chatId);
-    TimerResult stopPomodoro(String chatId);
-    TimerState getCurrentState(String chatId);
-    int getSessionCount(String chatId);
-    void setBreakTime(String chatId, int breakTime);
+    private static final int DEFAULT_WORK_TIME = 25;
+    private static final int DEFAULT_BREAK_TIME = 5;
+    private final Map<String, PomodoroTimer> timers = new HashMap<>();
+
+    private final WorkCommand workMessageCommand;
+    private final BreakCommand breakMessageCommand;
+    private final AskForBreakTimeCommand askForBreakTimeCommand;
+
+    public TimerResult startPomodoro(String chatId)
+    {
+        if (timers.containsKey(chatId))
+        {
+            return TimerResult.FAILURE;
+        }
+
+        PomodoroTimer timer = new PomodoroTimerImpl(DEFAULT_WORK_TIME, DEFAULT_BREAK_TIME, this, chatId);
+        timer.start();
+        timers.put(chatId, timer);
+        return TimerResult.SUCCESS;
+    }
+
+    public TimerResult stopPomodoro(String chatId)
+    {
+        PomodoroTimer timer = timers.remove(chatId);
+        if (timer == null)
+        {
+            return TimerResult.FAILURE;
+        }
+
+        timer.stop();
+        return TimerResult.SUCCESS;
+    }
+
+    public TimerState getCurrentState(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        if (timer == null)
+        {
+            return TimerState.OFF;
+        }
+
+        return timer.getState();
+    }
+
+    public int getSessionCount(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+
+        if (timer == null)
+        {
+            return -1;
+        }
+
+        return timer.getPomodoroCount();
+    }
+
+    public void setBreakTime(String chatId, int breakTime)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        timer.setBreakTime(breakTime);
+        timer.startBreakSession();
+    }
+
+    public int getBreakTime(String chatId)
+    {
+        PomodoroTimer timer = timers.get(chatId);
+        return timer != null ? timer.getBreakTime() : 0;
+    }
+
+    @Override
+    public void acceptStateChange(String chatId, TimerState state)
+    {
+        Update update = CommandUtils.buildUpdateWithChatId(chatId);
+
+        if (state == TimerState.WORK)
+        {
+            workMessageCommand.execute(update);
+        }
+        else if (state == TimerState.BREAK)
+        {
+            breakMessageCommand.execute(update);
+        }
+    }
+
+    @Override
+    public void askForChangingBreakTime(String chatId)
+    {
+        Update update = CommandUtils.buildUpdateWithChatId(chatId);
+        askForBreakTimeCommand.execute(update);
+    }
 }

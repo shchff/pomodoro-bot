@@ -5,14 +5,13 @@ import com.shchff.pomodoro.service.SendBotMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.Locale;
 
-import static com.shchff.pomodoro.command.CommandName.*;
+import static com.shchff.pomodoro.command.CommandName.WORK;
 
 @Component
 @RequiredArgsConstructor
-public class HelpCommand implements Command
+public class WorkCommand implements Command
 {
     private final SendBotMessageService sendBotMessageService;
     private final LocaleMessageService localeMessageService;
@@ -22,24 +21,13 @@ public class HelpCommand implements Command
     {
         String chatId = CommandUtils.getChatId(update).toString();
         Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("help", userLocale);
-        String richMessage = buildMessage(message);
-        sendBotMessageService.sendMessage(chatId, richMessage);
-    }
-
-    private String buildMessage(String message)
-    {
-        return String.format(message,
-                START_POMODORO.getCommandName(),
-                STOP_POMODORO.getCommandName(),
-                STATUS.getCommandName(),
-                HELP.getCommandName(),
-                ABOUT.getCommandName());
+        String message = localeMessageService.getMessage("work", userLocale);
+        sendBotMessageService.sendMessage(chatId, message);
     }
 
     @Override
     public String getCommandName()
     {
-        return HELP.getCommandName();
+        return WORK.getCommandName();
     }
 }

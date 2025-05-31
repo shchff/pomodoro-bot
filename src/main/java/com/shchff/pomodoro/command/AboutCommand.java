@@ -1,30 +1,34 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import static com.shchff.pomodoro.command.CommandUtils.getChatId;
 
+import java.util.Locale;
+
+import static com.shchff.pomodoro.command.CommandName.ABOUT;
+
+@Component
+@RequiredArgsConstructor
 public class AboutCommand implements Command
 {
     private final SendBotMessageService sendBotMessageService;
-
-    public final static String ABOUT_MESSAGE = """
-            🍅 Метод Помидора — это техника управления временем, разработанная Франческо Чирилло в конце 1980-х годов.
-            
-            📚 Основные принципы:
-            1️⃣ Разделяй работу на короткие 25-минутные интервалы (они называются «помидоры»), после которых следуют короткие перерывы по 5 минут.
-            2️⃣ После четырёх таких «помидоров» делай более длинный перерыв в диапозоне от 5 до 25 минут.
-            
-            🎯 Цель метода — помочь тебе сконцентрироваться, избежать выгорания и повысить продуктивность.""";
-
-    public AboutCommand(SendBotMessageService sendBotMessageService)
-    {
-        this.sendBotMessageService = sendBotMessageService;
-    }
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update)
     {
-        sendBotMessageService.sendMessage(getChatId(update).toString(), ABOUT_MESSAGE);
+        String chatId = CommandUtils.getChatId(update).toString();
+        Locale userLocale = CommandUtils.getUserLocale(update);
+        String message = localeMessageService.getMessage("about", userLocale);
+        sendBotMessageService.sendMessage(chatId, message);
+    }
+
+    @Override
+    public String getCommandName()
+    {
+        return ABOUT.getCommandName();
     }
 }

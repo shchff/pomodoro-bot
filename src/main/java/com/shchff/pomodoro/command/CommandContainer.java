@@ -1,34 +1,35 @@
 package com.shchff.pomodoro.command;
 
-import com.shchff.pomodoro.service.SendBotMessageService;
-import com.shchff.pomodoro.service.TimerService;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.shchff.pomodoro.command.CommandName.*;
-
+@Component
 public class CommandContainer
 {
-    private final Map<String, Command> commandMap;
+    private final Map<String, Command> commandMap = new HashMap<>();
     private final Command unknownCommand;
     @Getter
     private final SetBreakTimeCommand setBreakTimeCommand;
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, TimerService timerService)
+    @Autowired
+    public CommandContainer(List<Command> commands, SetBreakTimeCommand setBreakTimeCommand, UnknownCommand unknownCommand)
     {
-        this.setBreakTimeCommand = new SetBreakTimeCommand(timerService);
-        commandMap = new HashMap<>();
-        commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
-        commandMap.put(START_POMODORO.getCommandName(), new StartPomodoroCommand(sendBotMessageService, timerService));
-        commandMap.put(STOP_POMODORO.getCommandName(), new StopPomodoroCommand(sendBotMessageService, timerService));
-        commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
-        commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
-        commandMap.put(ABOUT.getCommandName(), new AboutCommand(sendBotMessageService));
-        commandMap.put(STATUS.getCommandName(), new StatusCommand(sendBotMessageService, timerService));
+        this.setBreakTimeCommand = setBreakTimeCommand;
+        this.unknownCommand = unknownCommand;
 
-        unknownCommand = new UnknownCommand(sendBotMessageService);
+        for (Command command : commands)
+        {
+            if (!(command instanceof UnknownCommand) && !(command instanceof SetBreakTimeCommand))
+            {
+                String commandName = command.getCommandName();
+                commandMap.put(commandName, command);
+            }
+        }
     }
 
     public Command retrieveCommand(String commandIdentifier)

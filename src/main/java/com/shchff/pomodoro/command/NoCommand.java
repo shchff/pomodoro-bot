@@ -1,26 +1,42 @@
 package com.shchff.pomodoro.command;
 
+import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static com.shchff.pomodoro.command.CommandName.HELP;
-import static com.shchff.pomodoro.command.CommandUtils.getChatId;
+import java.util.Locale;
 
+import static com.shchff.pomodoro.command.CommandName.HELP;
+import static com.shchff.pomodoro.command.CommandName.NO;
+
+@Component
+@RequiredArgsConstructor
 public class NoCommand implements Command
 {
-
     private final SendBotMessageService sendBotMessageService;
-
-    public static final String NO_MESSAGE = String.format("Я поддерживаю команды, начинающиеся со слеша(/)\n\nЧтобы посмотреть список команд введите %s", HELP.getCommandName());
-
-    public NoCommand(SendBotMessageService sendBotMessageService)
-    {
-        this.sendBotMessageService = sendBotMessageService;
-    }
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void execute(Update update)
     {
-        sendBotMessageService.sendMessage(getChatId(update).toString(), NO_MESSAGE);
+        String chatId = CommandUtils.getChatId(update).toString();
+        Locale userLocale = CommandUtils.getUserLocale(update);
+        String message = localeMessageService.getMessage("noCommand", userLocale);
+        String richMessage = buildMessage(message);
+        sendBotMessageService.sendMessage(chatId, richMessage);
+    }
+
+    private String buildMessage(String message)
+    {
+        return String.format(message,
+                HELP.getCommandName());
+    }
+
+    @Override
+    public String getCommandName()
+    {
+        return NO.getCommandName();
     }
 }
