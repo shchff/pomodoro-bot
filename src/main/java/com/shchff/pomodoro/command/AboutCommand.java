@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Locale;
-
 import static com.shchff.pomodoro.command.CommandName.ABOUT;
 
 @Component
@@ -20,9 +18,9 @@ public class AboutCommand implements Command
     @Override
     public void execute(Update update)
     {
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
         String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("about", userLocale);
+        String message = localeMessageService.getMessage("about", userId);
         sendBotMessageService.sendMessage(chatId, message);
     }
 

@@ -4,30 +4,18 @@ import com.shchff.pomodoro.service.LocaleMessageService;
 import com.shchff.pomodoro.service.SendBotMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import java.util.Locale;
-
-import static com.shchff.pomodoro.command.CommandName.WORK;
 
 @Component
 @RequiredArgsConstructor
-public class WorkCommand implements Command
+public class WorkCommand implements InternalCommand
 {
     private final SendBotMessageService sendBotMessageService;
     private final LocaleMessageService localeMessageService;
 
     @Override
-    public void execute(Update update)
+    public void execute(String chatId, Long userId)
     {
-        String chatId = CommandUtils.getChatId(update).toString();
-        Locale userLocale = CommandUtils.getUserLocale(update);
-        String message = localeMessageService.getMessage("work", userLocale);
+        String message = localeMessageService.getMessage("work", userId);
         sendBotMessageService.sendMessage(chatId, message);
-    }
-
-    @Override
-    public String getCommandName()
-    {
-        return WORK.getCommandName();
     }
 }

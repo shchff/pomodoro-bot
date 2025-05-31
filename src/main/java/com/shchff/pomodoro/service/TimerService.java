@@ -2,12 +2,12 @@ package com.shchff.pomodoro.service;
 
 import com.shchff.pomodoro.command.AskForBreakTimeCommand;
 import com.shchff.pomodoro.command.BreakCommand;
-import com.shchff.pomodoro.command.CommandUtils;
 import com.shchff.pomodoro.command.WorkCommand;
+import com.shchff.pomodoro.entity.UserPreferences;
+import com.shchff.pomodoro.repository.UserPreferencesRepository;
 import com.shchff.pomodoro.service.timer.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +22,14 @@ public class TimerService implements TimerObserver
     private final WorkCommand workMessageCommand;
     private final BreakCommand breakMessageCommand;
     private final AskForBreakTimeCommand askForBreakTimeCommand;
+    private final UserPreferencesRepository userPreferencesRepository;
+
+    private Long getUserIdByChatId(String chatId)
+    {
+        return userPreferencesRepository.findByChatId(chatId)
+                .map(UserPreferences::getUserId)
+                .orElse(null);
+    }
 
     public TimerResult startPomodoro(String chatId)
     {
@@ -87,22 +95,23 @@ public class TimerService implements TimerObserver
     @Override
     public void acceptStateChange(String chatId, TimerState state)
     {
-        Update update = CommandUtils.buildUpdateWithChatId(chatId);
+        Long userId = getUserIdByChatId(chatId);
 
         if (state == TimerState.WORK)
         {
-            workMessageCommand.execute(update);
+            workMessageCommand.execute(chatId, userId);
         }
         else if (state == TimerState.BREAK)
         {
-            breakMessageCommand.execute(update);
+            breakMessageCommand.execute(chatId, userId);
         }
     }
 
     @Override
     public void askForChangingBreakTime(String chatId)
     {
-        Update update = CommandUtils.buildUpdateWithChatId(chatId);
-        askForBreakTimeCommand.execute(update);
+        Long userId = getUserIdByChatId(chatId);
+        if (userId == null) userId = 0L;
+        askForBreakTimeCommand.execute(chatId, userId);
     }
 }

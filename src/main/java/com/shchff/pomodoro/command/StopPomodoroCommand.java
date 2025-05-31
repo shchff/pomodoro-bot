@@ -25,16 +25,16 @@ public class StopPomodoroCommand implements Command
     {
         String chatId = String.valueOf(CommandUtils.getChatId(update));
         TimerResult result = timerService.stopPomodoro(chatId);
-        Locale userLocale = CommandUtils.getUserLocale(update);
+        Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
 
         String message;
         if (result == TimerResult.SUCCESS)
         {
-            message = localeMessageService.getMessage("stopPomodoro.success", userLocale);
+            message = localeMessageService.getMessage("stopPomodoro.success", userId);
         }
         else
         {
-            message = localeMessageService.getMessage("stopPomodoro.failure", userLocale);
+            message = localeMessageService.getMessage("stopPomodoro.failure", userId);
         }
 
         sendBotMessageService.sendMessage(chatId, message);

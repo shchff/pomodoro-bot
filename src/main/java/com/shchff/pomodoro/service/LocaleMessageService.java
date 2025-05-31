@@ -11,9 +11,11 @@ import java.util.Locale;
 public class LocaleMessageService
 {
     private final MessageSource messageSource;
+    private final UserPreferencesService userPreferencesService;
 
-    public String getMessage(String code, Locale locale, Object... args)
+    public String getMessage(String code, Long userId)
     {
-        return messageSource.getMessage(code, args, locale);
+        Locale userLocale = userPreferencesService.getUserLocale(userId);
+        return messageSource.getMessage(code, null, userLocale);
     }
 }

@@ -6,17 +6,16 @@ import lombok.Getter;
 public enum CommandName
 {
     ABOUT("/about"),
-    ASK_FOR_BREAK_TIME("askforbreaktime"),
-    BREAK("break"),
     HELP("/help"),
+    LANGUAGE("/language"),
     NO("nocommand"),
     START("/start"),
     SET_BREAK_TIME("setbreaktime"),
+    SET_LANGUAGE("setlanguage"),
     START_POMODORO("/start_pomodoro"),
     STATUS("/status"),
     STOP_POMODORO("/stop_pomodoro"),
-    UNKNOWN("unknown"),
-    WORK("work");
+    UNKNOWN("unknown");
 
     private final String commandName;
 
