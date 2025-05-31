@@ -1,8 +1,7 @@
-FROM openjdk:17-jdk-slim-buster
-LABEL authors="shchff"
-WORKDIR /bot
-COPY /target/pomodoro-1.0.0.jar /bot/pomodoro.jar
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY target/pomodoro-1.0.1.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "pomodoro.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
