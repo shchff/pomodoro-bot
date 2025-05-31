@@ -45,7 +45,7 @@ Want to run your own Pomodoro Bot? Follow these simple steps:
 ### 2️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/pomodoro-bot.git
+git clone https://github.com/shchff/pomodoro-bot.git
 cd pomodoro-bot
 ```
 
