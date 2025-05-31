@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.shchff</groupId>
 	<artifactId>pomodoro</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>Pomodoro Bot</name>
 	<description>Telegram bot for time management</description>
 

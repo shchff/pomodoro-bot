@@ -64,7 +64,7 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot
 
         if (update.hasMessage() && update.getMessage().hasText())
         {
-            Long userId = CommandUtils.getUserIdFromCallbackQuery(update.getCallbackQuery());
+            Long userId = CommandUtils.getUserIdFromMessage(update.getMessage());
             String chatId = CommandUtils.getChatId(update).toString();
 
             userPreferencesService.registerUserIfNotExists(userId, chatId);
