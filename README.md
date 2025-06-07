@@ -99,6 +99,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
 
   pomodoro-bot:
     build: .
@@ -110,7 +116,11 @@ services:
     restart: always
     environment:
       SPRING_PROFILES_ACTIVE: prod
-
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
 volumes:
   postgres_data:
  ```
